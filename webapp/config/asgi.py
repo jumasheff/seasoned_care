@@ -13,10 +13,11 @@ from django.core.asgi import get_asgi_application
 from django.urls import re_path
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
+from dotenv import load_dotenv
 
 from app import consumers
 
-
+load_dotenv()
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 asgi_app = get_asgi_application()
