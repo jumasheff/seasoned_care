@@ -19,8 +19,6 @@ from langchain.vectorstores import Chroma
 
 from .tools import AppointmentTool, AppointmentToolInputModel
 
-os.environ["OPENAI_API_KEY"] = "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"
-
 
 def init_retriever():
     EMBEDDINGS = OpenAIEmbeddings()

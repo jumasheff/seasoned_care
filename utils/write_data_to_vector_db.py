@@ -9,9 +9,6 @@ from langchain.document_loaders import TextLoader
 from langchain.vectorstores import Chroma
 from langchain.schema import Document
 
-
-os.environ["OPENAI_API_KEY"] = "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"
-
 PERSIST_DIRECTORY = "../vector_db"
 ABS_PATH = os.path.dirname(os.path.abspath(__file__))
 DB_DIR = os.path.join(ABS_PATH, PERSIST_DIRECTORY)

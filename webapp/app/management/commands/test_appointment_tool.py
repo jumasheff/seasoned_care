@@ -7,8 +7,6 @@ from langchain.agents.initialize import initialize_agent
 
 from app.chatbot.tools import AppointmentTool, AppointmentToolInputModel
 
-os.environ["OPENAI_API_KEY"] = "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"
-
 
 class Command(BaseCommand):
     help = "Runs my script"
