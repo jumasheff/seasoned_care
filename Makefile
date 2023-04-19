@@ -9,7 +9,7 @@ build:
 	test -d env || python3 -m venv env
 	. env/bin/activate && pip install -r requirements.txt
 	. env/bin/activate && cd webapp && ./manage.py migrate
-	. env/bin/activate && cd webapp && ./manage.py createsuperuser --username admin
+	. env/bin/activate && cd webapp && ./manage.py loaddata initial_data.json
 
 run:
 	. env/bin/activate && cd webapp && ./manage.py runserver
