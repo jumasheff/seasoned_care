@@ -231,13 +231,19 @@ def get_appointment_chat_prompt(tools: List[Tool]):
 def get_appointment_json_prompt():
     template = """You are a care coordinator bot's appointments tool.
     You should take Current conversation and Human input and return a JSON string WITHOUT ANY ACCOMPANYING TEXTS.
-    Return JUST JSON!
-    Name, date and time are required fields.
-    Current date and time is: %s
+    JSON fields:
+    name: title of the appointment. You should come up with it based on the user's query
+    date: date when user wants to see a doctor
+    time: time when user wants to see a doctor
+    description: put here what they literally say in their message.
+
+    Name, date and time fields are required ones!
+    For context, current date and time is: %s
     Current conversation:
     {history}
     Human: {input}
-    Under "Current conversation" there might be name, date or time. Reuse them ONLY if it contains relevant information: date, time, name or description.
+    Under "Current conversation" there might be name, date or time.
+    Reuse them ONLY if it contains relevant information: date, time, name or description.
     Output format (see, no accompanying text, just JSON):
     ```
     {{
