@@ -5,7 +5,7 @@ ZIP_FILE := vector_db.zip
 
 build:
 	curl -o $(ZIP_FILE) $(S3_URL)
-	unzip $(ZIP_FILE) -d vector_db
+	unzip $(ZIP_FILE) -d .
 	test -d env || python3 -m venv env
 	. env/bin/activate && pip install -r requirements.txt
 	. env/bin/activate && cd webapp && ./manage.py migrate
