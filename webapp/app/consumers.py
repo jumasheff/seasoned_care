@@ -34,8 +34,8 @@ def get_profile(user):
     data = f"""User health data:
     Gender: {prof.gender};
     Age: {prof.age};
-    Weight: {prof.weight};
-    Height: {prof.height};
+    Weight: {prof.weight} kilograms;
+    Height: {prof.height} centimeters;
     Health condition notes: {prof.health_conditions_notes}"""
     return data
 
