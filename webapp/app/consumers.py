@@ -1,6 +1,7 @@
 import json
 
 from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from langchain.memory import ConversationBufferMemory
 
@@ -27,10 +28,23 @@ chat_history = []
 memory = ConversationBufferMemory()
 
 
+@database_sync_to_async
+def get_profile(user):
+    prof = user.healthprofile
+    data = f"""User health data:
+    Gender: {prof.gender};
+    Age: {prof.age};
+    Weight: {prof.weight};
+    Height: {prof.height};
+    Health condition notes: {prof.health_conditions_notes}"""
+    return data
+
+
 class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
         # TODO(murat): check if user is authenticated.
         # TODO(murat): create a chat session and use session id as chat_box_name.
+        self.health_data = await get_profile(self.scope["user"])
         self.chat_box_name = self.scope["url_route"]["kwargs"]["chat_box_name"]
         self.group_name = "chat_%s" % self.chat_box_name
 
@@ -170,10 +184,13 @@ class ChatRoomConsumer(AsyncJsonWebsocketConsumer):
         start_resp = ChatResponse(username="bot", message="", type="start")
         await self.send(text_data=json.dumps(start_resp.dict()))
 
-        result = await self.symptopms_qa_chain.acall(
-            {"question": message, "chat_history": chat_history}
+        question = (
+            f"Original question: {message}.\nPatient health data: {self.health_data}"
         )
-        chat_history.append((message, result["answer"]))
+        result = await self.symptopms_qa_chain.acall(
+            {"question": question, "chat_history": chat_history}
+        )
+        chat_history.append((question, result["answer"]))
 
         end_resp = ChatResponse(username="bot", message="", type="end")
         await self.send(text_data=json.dumps(end_resp.dict()))
