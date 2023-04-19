@@ -51,6 +51,7 @@ def get_intent_prompt():
         {"input": "Hey, I have a headache", "intent": "symptom"},
         {"input": "What about May 5th", "intent": "appointment"},
         {"input": "I want to see a doctor this week", "intent": "appointment"},
+        {"input": "Tomorrow works?", "intent": "appointment"},
         {"input": "I don't feel good", "intent": "symptom"},
         {"input": "hey, how are you?", "intent": "None"},
         {"input": "how does this shit work?", "intent": "None"},
@@ -230,30 +231,33 @@ def get_appointment_chat_prompt(tools: List[Tool]):
 
 def get_appointment_json_prompt():
     template = """You are a care coordinator bot's appointments tool.
-    You should take Current conversation and Human input and return a JSON string WITHOUT ANY ACCOMPANYING TEXTS.
+    You should take Current conversation and Human input
+    and return a JSON string WITHOUT ANY ACCOMPANYING TEXTS.
     JSON fields:
-    name: title of the appointment. You should come up with it based on the user's query
-    date: date when user wants to see a doctor
-    time: time when user wants to see a doctor
-    description: put here what they literally say in their message.
+    name: appointment title. Come up with it based on the conversation history
+    date: appointment date. Leave empty if not provided. Don't make it up!
+    time: appointment time. Leave empty if not provided. Don't make it up!
+    description: put here user's complaints (health condition messages).
 
-    Name, date and time fields are required ones!
-    For context, current date and time is: %s
-    Current conversation:
-    {history}
-    Human: {input}
-    Under "Current conversation" there might be name, date or time.
-    Reuse them ONLY if it contains relevant information: date, time, name or description.
+    Under "Current conversation:" below there might be name, date or time.
+    Reuse them ONLY if relevant info is there: name, date, time, or description.
     Output format (see, no accompanying text, just JSON):
     ```
     {{
         "name": "Appointment title derived from the current conversation",
         "date": "YYYY-MM-DD",
         "time": "HH:MM",
-        "description": "Appointment description derived from the current conversation"
+        "description": "put here user's complaints (health condition messages)"
     }}
     ```
-    Remember to return a JSON from the provided info only! Don't make up answers.
+    Remember to return a JSON with data derived from conversation!
+    Don't make up answers!
+    
+    Current date and time is: %s
+    
+    Current conversation:
+    {history}
+    Human: {input}
     """ % (
         datetime.now()
     )
