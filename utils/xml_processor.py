@@ -1,11 +1,19 @@
+# This code is heavily based on this notebook: https://github.com/mahesh-keswani/med-quad-mlm-bert/blob/main/ProcessData.ipynb
+
 import json
 import os
 import xmltodict
 import re
 import time
+
+import git
 import pandas as pd
 from jsonpath import jsonpath
 
+
+BASE_PATH = "../clean_data"
+RAW_DATA_PATH = "../raw_data"
+MEDQUAD_REPO_URL = 'git@github.com:abachaa/MedQuAD.git'
 data = {"Questions": [], "Answers": [], "Focus": []}
 
 
@@ -36,6 +44,15 @@ def processXmlFile(completePath):
             except:
                 return
 
+def download_med_qa_dataset():
+    if os.path.exists(RAW_DATA_PATH):
+        git.Repo.clone_from(
+            MEDQUAD_REPO_URL,
+            RAW_DATA_PATH,
+            branch="master")
+    else:
+        os.mkdir(RAW_DATA_PATH)
+        download_med_qa_dataset()
 
 foldersWithEmptyAnswers = [
     ".git",
@@ -47,8 +64,7 @@ foldersWithEmptyAnswers = [
     "ProcessedData.csv",
 ]
 
-BASE_PATH = "./clean_data"
-RAW_DATA_PATH = "./raw_data"
+download_med_qa_dataset()
 
 for folder in os.listdir(RAW_DATA_PATH):
     if folder in foldersWithEmptyAnswers:
