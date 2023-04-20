@@ -1,14 +1,13 @@
-import time
 import os
 import csv
 import chromadb
+from dotenv import load_dotenv
 
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.document_loaders import TextLoader
 from langchain.vectorstores import Chroma
 from langchain.schema import Document
 
+load_dotenv('../.env')
 PERSIST_DIRECTORY = "../vector_db"
 ABS_PATH = os.path.dirname(os.path.abspath(__file__))
 DB_DIR = os.path.join(ABS_PATH, PERSIST_DIRECTORY)
