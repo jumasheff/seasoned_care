@@ -21,3 +21,10 @@ make run
 
 6. Go to localhost:8000/admin and login (username: admin password: admin123admin). Otherwise the chat won't work.
 7. Go to localhost:8000/chat and have fun!
+
+## Credits
+
+This project is built using incredible framework called [LangChain](https://github.com/hwchase17/langchain)
+
+Also, I used [MedQuaD](https://github.com/abachaa/MedQuAD) as a dataset.
+To view the full list of tools, see requirements.
